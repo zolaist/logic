@@ -1,0 +1,460 @@
+[
+    {
+        "title": "문장 논리",
+        "logic_type": "propositional",
+        "sort_order": 1,
+        "sections": [
+            {
+                "title": "기본 규칙 활용 증명",
+                "sort_order": 1,
+                "items": [
+                    {
+                        "title": "1",
+                        "problem": "A → B / A & C / (B & C) → D // D",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "2",
+                        "problem": "~A ∨ B / ~B / A ∨ C // ~B & C",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "3",
+                        "problem": "D / (D ∨ A) → (B ∨ C) / ~B / (C ∨ ~F) → (G & H) // G",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "4",
+                        "problem": "~(A & G) ∨ C / ~C / (A & G) ∨ (~D ∨ F) / E → B / E ∨ D / ~F // B",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "5",
+                        "problem": "B & D / (B ∨ F) → (A & G) / (G → E) & ~C // ~C & E",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "6",
+                        "problem": "(B → D) & (C → E) / B ∨ C / (D ∨ E) → (A ∨ F) / ~A & ~C // F & B",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "7",
+                        "problem": "(~A ∨ B) → (C → D) / (~F ∨ B) → (D → E) / ~A & ~F // C → E",
+                        "sort_order": 7
+                    },
+                    {
+                        "title": "8",
+                        "problem": "~(A → ~C) / (D → E) ∨ (A → ~C) / E → ~B // D → ~B",
+                        "sort_order": 8
+                    },
+                    {
+                        "title": "9",
+                        "problem": "~A ∨ ~B / A ∨ (C → ~D) / ~~B / ~D → E // C → E",
+                        "sort_order": 9
+                    },
+                    {
+                        "title": "10",
+                        "problem": "A → ~B / C ∨ A / B // C",
+                        "sort_order": 10
+                    },
+                    {
+                        "title": "11",
+                        "problem": "A ∨ (B & C) / B → D / ~D // A",
+                        "sort_order": 11
+                    },
+                    {
+                        "title": "12",
+                        "problem": "A ∨ ~(D ∨ C) / ~(A ∨ ~D) ∨ B // B",
+                        "sort_order": 12
+                    }
+                ]
+            },
+            {
+                "title": "파생 규칙 1",
+                "sort_order": 2,
+                "items": [
+                    {
+                        "title": "~~ 도입",
+                        "problem": "X // ~~X",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "후건 부정 a",
+                        "problem": "X → Y / ~Y // ~X",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "후건 부정 b",
+                        "problem": "X → ~Y / Y // ~X",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "연쇄 논법",
+                        "problem": "X → Y / Y → Z // X → Z",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "대우 규칙 a",
+                        "problem": "X → Y // ~Y → ~X",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "대우 규칙 b",
+                        "problem": "X → ~Y // Y → ~X",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "약화",
+                        "problem": "Y // X → Y",
+                        "sort_order": 7
+                    },
+                    {
+                        "title": "경우 논증",
+                        "problem": "X ∨ Y / X → Z / Y → Z // Z",
+                        "sort_order": 8
+                    }
+                ]
+            },
+            {
+                "title": "파생 규칙 2",
+                "sort_order": 3,
+                "items": [
+                    {
+                        "title": "교환 규칙 a",
+                        "problem": "// (X ∨ Y) ↔ (Y ∨ X)",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "교환 규칙 b",
+                        "problem": "// (X & Y) ↔ (Y & X)",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "결합 규칙 a",
+                        "problem": "// (X ∨ (Y ∨ Z)) ↔ ((X ∨ Y) ∨ Z)",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "결합 규칙 b",
+                        "problem": "// (X & (Y & Z)) ↔ ((X & Y) & Z)",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "분배 규칙 a1",
+                        "problem": "X & (Y ∨ Z) // (X & Y) ∨ (X & Z)",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "분배 규칙 a2",
+                        "problem": "(X & Y) ∨ (X & Z) // X & (Y ∨ Z)",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "분배 규칙 b1",
+                        "problem": "X ∨ (Y & Z) // (X ∨ Y) & (X ∨ Z)",
+                        "sort_order": 7
+                    },
+                    {
+                        "title": "분배 규칙 b2",
+                        "problem": "(X ∨ Y) & (X ∨ Z) // X ∨ (Y & Z)",
+                        "sort_order": 8
+                    },
+                    {
+                        "title": "드 모르간의 규칙 a1",
+                        "problem": "~(X ∨ Y) // ~X & ~Y",
+                        "sort_order": 9
+                    },
+                    {
+                        "title": "드 모르간의 규칙 a2",
+                        "problem": "~X & ~Y // ~(X ∨ Y)",
+                        "sort_order": 10
+                    },
+                    {
+                        "title": "드 모르간의 규칙 b1",
+                        "problem": "~(X & Y) // ~X ∨ ~Y",
+                        "sort_order": 11
+                    },
+                    {
+                        "title": "드 모르간의 규칙 b2",
+                        "problem": "~X ∨ ~Y // ~(X & Y)",
+                        "sort_order": 12
+                    },
+                    {
+                        "title": "조건문 규칙 a1",
+                        "problem": "X → Y // ~X ∨ Y",
+                        "sort_order": 13
+                    },
+                    {
+                        "title": "조건문 규칙 a2",
+                        "problem": "~X ∨ Y // X → Y",
+                        "sort_order": 14
+                    },
+                    {
+                        "title": "조건문 규칙 b1",
+                        "problem": "~(X → Y) // X & ~Y",
+                        "sort_order": 15
+                    },
+                    {
+                        "title": "조건문 규칙 b2",
+                        "problem": "X & ~Y // ~(X → Y)",
+                        "sort_order": 16
+                    }
+                ]
+            },
+            {
+                "title": "파생 규칙 활용 증명",
+                "sort_order": 4,
+                "items": [
+                    {
+                        "title": "1",
+                        "problem": "~A → B / B → ~C // C → A",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "2",
+                        "problem": "A ↔ ~B / A ↔ C // ~B ↔ C",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "3",
+                        "problem": "~A → ((B → D) → (A ∨ ~C)) / (B → C) → ~A / B → D / D → C // ~D",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "4",
+                        "problem": "~A → (C & B) / ~D → (B & E) / ~A ∨ ~D // B",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "5",
+                        "problem": "(B → A) & (A → (D → ~C)) / (D ∨ E) ↔ (A ∨ B) / ((E → ~C) ∨ ~A) & B // ~C",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "6",
+                        "problem": "(A ∨ D) ∨ C / (A ∨ C) → ~B / ~D // ~(D ∨ B)",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "7",
+                        "problem": "B → (C → A) / C → (A → ~C) // ~B ∨ ~C",
+                        "sort_order": 7
+                    },
+                    {
+                        "title": "8",
+                        "problem": "C ∨ D / ~D ∨ ~(A & B) // ~C → (A → ~B)",
+                        "sort_order": 8
+                    },
+                    {
+                        "title": "9",
+                        "problem": "(C & B) → D / (B → D) → ~A / ~(E ∨ ~C) // ~A",
+                        "sort_order": 9
+                    },
+                    {
+                        "title": "10",
+                        "problem": "A → ~B / ~(A & B) → (~C ∨ (D & E)) // ~C ∨ E",
+                        "sort_order": 10
+                    },
+                    {
+                        "title": "11",
+                        "problem": "~C → (C ∨ (A → D)) / C → (C & B) / ~C ∨ ~B / ~D // ~A",
+                        "sort_order": 11
+                    },
+                    {
+                        "title": "12",
+                        "problem": "C → (B → ~A) / B → (~A → ~D) // C → (D → ~B)",
+                        "sort_order": 12
+                    },
+                    {
+                        "title": "13",
+                        "problem": "A → (B → C) / B → (C → ~D) // A → (~D ∨ ~B)",
+                        "sort_order": 13
+                    },
+                    {
+                        "title": "14",
+                        "problem": "(A ∨ (B ∨ C)) → ~(D & ~C) / E → (B ∨ (C ∨ A)) // (E & D) → C",
+                        "sort_order": 14
+                    }
+                ]
+            },
+            {
+                "title": "유명한 원리들",
+                "sort_order": 5,
+                "items": [
+                    {
+                        "title": "폭발의 원리",
+                        "problem": "X & ~X // Y",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "배중률",
+                        "problem": "// X ∨ ~X",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "동일률",
+                        "problem": "// X → X",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "수출 규칙",
+                        "problem": "(X & Y) → Z // X → (Y → Z)",
+                        "sort_order": 4
+                    }
+                ]
+            },
+            {
+                "title": "논리적 참",
+                "sort_order": 6,
+                "items": [
+                    {
+                        "title": "1",
+                        "problem": "// (A → B) → (~B → ~(A & C))",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "2",
+                        "problem": "// (A & ~B) ∨ ((B & C) ∨ ~(C & A))",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "3",
+                        "problem": "// ((A → B) & (A → ~B)) → ~A",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "4",
+                        "problem": "// ((A → C) & (B → C)) → ((A ∨ B) → C)",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "5",
+                        "problem": "// A ↔ ((A & B) ∨ (A & ~B))",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "6",
+                        "problem": "// ((A ∨ B) & (~B ∨ ~(C & D))) → (~A → (C → ~D))",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "7",
+                        "problem": "// ~(A & ~B) ∨ (C → (~A ∨ (C ∨ B)))",
+                        "sort_order": 7
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "title": "술어 논리",
+        "logic_type": "predicate",
+        "sort_order": 2,
+        "sections": [
+            {
+                "title": "양화사의 부정 규칙들",
+                "sort_order": 1,
+                "items": [
+                    {
+                        "title": "존재 양화사의 부정 a",
+                        "problem": "~(∃x)Fx // (∀x)~Fx",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "존재 양화사의 부정 b",
+                        "problem": "(∀x)~Fx // ~(∃x)Fx",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "보편 양화사의 부정 a",
+                        "problem": "~(∀x)Fx // (∃x)~Fx",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "보편 양화사의 부정 b",
+                        "problem": "(∃x)~Fx // ~(∀x)Fx",
+                        "sort_order": 4
+                    }
+                ]
+            },
+            {
+                "title": "다중 양화 문장",
+                "sort_order": 2,
+                "items": [
+                    {
+                        "title": "1",
+                        "problem": "~(∃x)((Nx & Px) & Sx) // (∀x)((Nx & Px) → ~Sx)",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "2",
+                        "problem": "~(∀x)(Px → (Nx & Gx)) // (∃x)(Px & (~Nx ∨ ~Gx))",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "3",
+                        "problem": "Dd / (∃x)(Qx & Rxd) // (∃x)(Dx & (∃y)(Qy & Ryx))",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "4",
+                        "problem": "(∃x)(Dx & (∀y)(Py → Cyx)) // (∀x)(Px → (∃y)(Dy & Cxy))",
+                        "sort_order": 4
+                    },
+                    {
+                        "title": "5",
+                        "problem": "~(∀x)(Px → (∀y)(Py → Dxy)) // (∃x)(Px & (∃y)(Py & ~Dxy))",
+                        "sort_order": 5
+                    },
+                    {
+                        "title": "6",
+                        "problem": "(∀x)(Px → (∃y)(Py & Lyx)) // ~(∃x)(Px & (∀y)(Py → ~Lyx))",
+                        "sort_order": 6
+                    },
+                    {
+                        "title": "7",
+                        "problem": "(∃x)(Sx & (∀y)(My → Pyx)) // (∀x)(Mx → (∃y)(Sy & Pxy))",
+                        "sort_order": 7
+                    },
+                    {
+                        "title": "8",
+                        "problem": "~(∃x)(Px & (∀y)(Py → ~Ryx)) // (∀x)(Px → (∃y)(Py & Ryx))",
+                        "sort_order": 8
+                    },
+                    {
+                        "title": "9",
+                        "problem": "(∀x)(~(Px & Lxa) → ~Lxe) // (∀x)((Px & Lxe) → Lxa)",
+                        "sort_order": 9
+                    }
+                ]
+            },
+            {
+                "title": "동일성 관계의 특성들",
+                "sort_order": 3,
+                "items": [
+                    {
+                        "title": "동일성의 재귀성",
+                        "problem": "// (∀x)(x=x)",
+                        "sort_order": 1
+                    },
+                    {
+                        "title": "동일성의 대칭성",
+                        "problem": "// (∀x)(∀y)(x=y → y=x)",
+                        "sort_order": 2
+                    },
+                    {
+                        "title": "동일성의 이행성",
+                        "problem": "// (∀x)(∀y)(∀z)((x=y & y=z) → x=z)",
+                        "sort_order": 3
+                    },
+                    {
+                        "title": "동일자 구별불가능성 원리",
+                        "problem": "// (∀x)(∀y)(x=y → (Fx ↔ Fy))",
+                        "sort_order": 4
+                    }
+                ]
+            }
+        ]
+    }
+]

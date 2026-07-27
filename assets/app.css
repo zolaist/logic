@@ -1,63 +1,3 @@
-@font-face {
-    font-family: "Latin Modern Math";
-    src:
-        local("Latin Modern Math"),
-        local("latinmodern-math"),
-        url("latin-modern-math.php?face=math&v=1.959") format("opentype"),
-        url("https://mirrors.ctan.org/fonts/lm-math/opentype/latinmodern-math.otf") format("opentype");
-    font-style: normal;
-    font-weight: 300 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Latin Modern Logic";
-    src:
-        local("Latin Modern Roman"),
-        local("LMRoman10-Regular"),
-        url("latin-modern-math.php?face=regular&v=2.004") format("opentype"),
-        url("https://mirrors.ctan.org/fonts/lm/fonts/opentype/public/lm/lmroman10-regular.otf") format("opentype");
-    font-style: normal;
-    font-weight: 300 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Latin Modern Logic";
-    src:
-        local("Latin Modern Roman Italic"),
-        local("LMRoman10-Italic"),
-        url("latin-modern-math.php?face=italic&v=2.004") format("opentype"),
-        url("https://mirrors.ctan.org/fonts/lm/fonts/opentype/public/lm/lmroman10-italic.otf") format("opentype");
-    font-style: italic;
-    font-weight: 300 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Latin Modern Logic";
-    src:
-        local("Latin Modern Roman Bold"),
-        local("LMRoman10-Bold"),
-        url("latin-modern-math.php?face=bold&v=2.004") format("opentype"),
-        url("https://mirrors.ctan.org/fonts/lm/fonts/opentype/public/lm/lmroman10-bold.otf") format("opentype");
-    font-style: normal;
-    font-weight: 700 900;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Latin Modern Logic";
-    src:
-        local("Latin Modern Roman Bold Italic"),
-        local("LMRoman10-BoldItalic"),
-        url("latin-modern-math.php?face=bolditalic&v=2.004") format("opentype"),
-        url("https://mirrors.ctan.org/fonts/lm/fonts/opentype/public/lm/lmroman10-bolditalic.otf") format("opentype");
-    font-style: italic;
-    font-weight: 700 900;
-    font-display: swap;
-}
-
 :root {
     color-scheme: light;
     --bg: #ffffff;
@@ -102,7 +42,7 @@
     --subproof-line-width: 2px;
     --subproof-line-color: var(--ink);
     --font-ui: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-logic: "Latin Modern Logic", "Latin Modern Math", ui-serif, Georgia, "Times New Roman", Cambria, Times, "Noto Serif KR", "AppleMyungjo", serif;
+    --font-logic: "STIX Two Math", Georgia, "Times New Roman", Times, ui-serif, serif;
 }
 
 * {
@@ -295,7 +235,7 @@ h1 {
 
 .input-rule-list > div {
     display: grid;
-    grid-template-columns: minmax(106px, 0.46fr) minmax(0, 1fr);
+    grid-template-columns: minmax(138px, 0.60fr) minmax(0, 1fr);
     align-items: stretch;
     min-width: 0;
     border-bottom: 1px solid var(--line);
@@ -328,6 +268,7 @@ h1 {
 }
 
 .input-rule-list dd.has-example,
+.input-rule-list .atomic-entry,
 .input-rule-list .term-entry {
     flex-direction: column;
     align-items: flex-start;
@@ -347,6 +288,57 @@ h1 {
 .input-rule-example sub {
     font-size: 0.72em;
     line-height: 0;
+}
+
+.input-rule-list > .input-rule-atomic-group dt {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    padding: 0;
+}
+
+.input-rule-list .atomic-group-label {
+    display: flex;
+    grid-row: 1 / 4;
+    align-items: center;
+    padding: 10px 12px;
+    border-right: 1px solid var(--line);
+}
+
+.input-rule-list .atomic-kind {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    white-space: nowrap;
+}
+
+.input-rule-list .atomic-kind:nth-of-type(2) {
+    border-bottom: 1px solid var(--line);
+}
+
+.input-rule-list .atomic-kind:nth-of-type(3) {
+    border-bottom: 1px solid var(--line);
+}
+
+.input-rule-list > .input-rule-atomic-group dd {
+    display: grid;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    padding: 0;
+}
+
+.input-rule-list > .input-rule-atomic-group dd > .atomic-entry {
+    display: flex;
+    padding: 10px 12px;
+}
+
+.input-rule-list > .input-rule-atomic-group dd > .atomic-entry:first-child {
+    border-bottom: 1px solid var(--line);
+}
+
+.input-rule-list > .input-rule-atomic-group dd > .atomic-entry:nth-of-type(2) {
+    border-bottom: 1px solid var(--line);
 }
 
 .input-rule-list > .input-rule-term-group dt {
@@ -892,6 +884,7 @@ h1 {
     box-sizing: content-box;
     color: var(--muted);
     font-size: 13px;
+    font-family: ui-serif, "Times New Roman";
     font-style: italic;
     font-weight: 300;
     text-align: left;
@@ -930,6 +923,7 @@ h1 {
     padding-right: 0;
     color: inherit;
     font-size: 13px;
+    font-family: ui-serif, "Times New Roman";
     font-style: italic;
     font-weight: 300;
 }
@@ -1876,6 +1870,12 @@ h1 {
     color: var(--accent-dark);
     font-size: 14px;
     font-weight: 800;
+}
+
+.target-example-title {
+    margin-left: 8px;
+    color: var(--muted);
+    font-weight: 650;
 }
 
 .target-conclusion.is-empty-target:not(.is-editing) .target-label {

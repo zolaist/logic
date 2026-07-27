@@ -17,6 +17,7 @@ let isTargetEditorOpen = true;
 let targetConclusionError = '';
 let isEditorVisible = true;
 let targetConclusion = null;
+let loadedExampleTitle = '';
 let swipeGesture = null;
 let swipedLineNumber = null;
 const proofLines = [];
@@ -4914,6 +4915,17 @@ function moveCaretToEnd(control) {
     selection.addRange(range);
 }
 
+function appendLoadedExampleTitle(label) {
+    if (!targetConclusion || !loadedExampleTitle) {
+        return;
+    }
+
+    const title = document.createElement('span');
+    title.className = 'target-example-title';
+    title.textContent = loadedExampleTitle;
+    label.append(title);
+}
+
 function createTargetConclusionElement() {
     const isEditorOpen = isTargetEditorOpen || !targetConclusion;
     const conclusion = document.createElement('article');
@@ -4933,6 +4945,7 @@ function createTargetConclusionElement() {
         const label = document.createElement('span');
         label.className = 'target-label';
         label.textContent = '문제';
+        appendLoadedExampleTitle(label);
 
         const editor = document.createElement('div');
         editor.className = 'target-editor';
@@ -4971,6 +4984,7 @@ function createTargetConclusionElement() {
     const label = document.createElement('span');
     label.className = 'target-label';
     label.textContent = targetConclusion ? '문제' : '';
+    appendLoadedExampleTitle(label);
 
     const formula = document.createElement('p');
     formula.className = targetConclusion
@@ -5008,6 +5022,7 @@ function createTargetConclusionElement() {
 function clearProofEditor() {
     proofLines.length = 0;
     targetConclusion = null;
+    loadedExampleTitle = '';
     isTargetEditorOpen = true;
     targetConclusionError = '';
     nextLineNumber = 1;
@@ -5630,7 +5645,7 @@ function validateProofLinePredicateArity(rawFormula, options = {}) {
 
 function loadProblemFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    const rawProblem = params.get('problem');
+    const rawProblem = params.get('');
     const rawAnswer = params.get('answer');
 
     if (!rawProblem) {
@@ -5662,7 +5677,7 @@ function loadProblemFromUrl() {
 
 function updateExampleUrl(problem, answer) {
     const params = new URLSearchParams();
-    params.set('problem', problem);
+    params.set('', problem);
 
     if (answer) {
         params.set('answer', answer);
@@ -5671,12 +5686,18 @@ function updateExampleUrl(problem, answer) {
     window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`);
 }
 
-function loadRuleExample(problem, answer) {
+function updateRuleExampleUrl(exampleId) {
+    const params = new URLSearchParams();
+    params.set('example', String(exampleId));
+    window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`);
+}
+
+function loadRuleExample(problem, answer, options = {}) {
     const parsedProblem = parseProblemInput(problem);
 
     if (!parsedProblem.ok) {
         window.alert(`예제 문제를 읽을 수 없습니다. ${parsedProblem.error}`);
-        return;
+        return false;
     }
 
     const parsedAnswer = answer
@@ -5685,141 +5706,23 @@ function loadRuleExample(problem, answer) {
 
     if (!parsedAnswer.ok) {
         window.alert(`예제 정답을 읽을 수 없습니다. ${parsedAnswer.error}`);
-        return;
+        return false;
     }
 
     applyParsedProblem(parsedProblem);
     applyParsedAnswer(parsedAnswer);
-    updateExampleUrl(problem, answer);
+    loadedExampleTitle = options.title || '';
+
+    if (options.updateUrl !== false) {
+        updateExampleUrl(problem, answer);
+    }
+
     renderProofLines();
     updateActiveLineMarker();
     updateEntryState();
+    return true;
 }
 
-const ruleSchemeExamples = {
-    '반복': [
-        { problem: 'P // P', answer: 'P :: 1,R' },
-    ],
-    '& 도입': [
-        { problem: 'P / Q // P & Q', answer: 'P & Q :: 1,2,&I' },
-    ],
-    '& 제거': [
-        { problem: 'P & Q // P', answer: 'P :: 1,&E' },
-        { problem: 'P & Q // Q', answer: 'Q :: 1,&E' },
-    ],
-    '∨ 도입': [
-        { problem: 'P // P v Q', answer: 'P v Q :: 1,vI' },
-        { problem: 'P // Q v P', answer: 'Q v P :: 1,vI' },
-    ],
-    '∨ 제거': [
-        { problem: 'P v Q / ~P // Q', answer: 'Q :: 1,2,vE' },
-    ],
-    '→ 도입': [
-        { problem: '// P -> P', answer: 'P :: AS\nP / :: 1,R\nP -> P :: 1-2,>I' },
-    ],
-    '→ 제거': [
-        { problem: 'P -> Q / P // Q', answer: 'Q :: 1,2,>E' },
-    ],
-    '↔ 도입': [
-        { problem: 'P -> Q / Q -> P // P <-> Q', answer: 'P <-> Q :: 1,2,<>I' },
-        { problem: 'P -> Q / Q -> P // Q <-> P', answer: 'Q <-> P :: 1,2,<>I' },
-        { problem: 'P -> Q / Q -> P // P <-> Q', answer: 'P :: AS\nQ / :: 1,3,>E\nQ :: AS\nP / :: 2,5,>E\nP <-> Q :: 3-4,5-6,<>I' },
-    ],
-    '↔ 제거': [
-        { problem: 'P <-> Q // P -> Q', answer: 'P -> Q :: 1,<>E' },
-        { problem: 'P <-> Q // Q -> P', answer: 'Q -> P :: 1,<>E' },
-    ],
-    '~ 도입': [
-        { problem: 'P // ~~P', answer: '~P :: AS\n_ / :: 1,2,_I\n~~P :: 2-3,~I' },
-        { problem: 'P // ~~P', answer: '~P :: AS\nP / :: 1,R\n~~P :: 2-3,~I' },
-    ],
-    '~~ 제거': [
-        { problem: '~~P // P', answer: 'P :: 1,~~E' },
-    ],
-    '⊥ 도입': [
-        { problem: 'P / ~P // ⊥', answer: '⊥ :: 1,2,_I' },
-    ],
-    '∀ 제거': [
-        { problem: '(forall x)Fx // Fa', answer: 'Fa :: 1,AE' },
-    ],
-    '∀ 도입': [
-        { problem: '// (forall x)(Fx -> Fx)', answer: '[u] Fu :: AS\nFu / :: 1,R\nFu -> Fu / :: 1-2,>I\n(forall x)(Fx -> Fx) :: 1-3,AI' },
-    ],
-    '∃ 도입': [
-        { problem: 'Fa // (exists x)Fx', answer: '(exists x)Fx :: 1,EI' },
-    ],
-    '∃ 제거': [
-        { problem: '(exists x)Fx / (forall x)(Fx -> C) // C', answer: 'C :: 1,2,EE' },
-        { problem: '(exists x)Fx / (forall x)(Fx -> C) // C', answer: '[d] Fd :: AS (for 1, EE)\nFd -> C :: 2, AE\nC / :: 3, 4, >E\nC :: 1, 3-5, EE' },
-    ],
-    '= 도입': [
-        { problem: '// a=a', answer: 'a=a :: =I' },
-    ],
-    '= 제거': [
-        { problem: 'a=b / Fa // Fb', answer: 'Fb :: 1,2,=E' },
-        { problem: 'a=b / Fb // Fa', answer: 'Fa :: 1,2,=E' },
-    ],
-    '~~ 도입': [
-        { problem: 'P // ~~P', answer: '~~P :: 1,~~I' },
-    ],
-    '후건 부정': [
-        { problem: 'P -> Q / ~Q // ~P', answer: '~P :: 1,2,MT' },
-        { problem: 'P -> ~Q / Q // ~P', answer: '~P :: 1,2,MT' },
-    ],
-    '연쇄 논법': [
-        { problem: 'P -> Q / Q -> R // P -> R', answer: 'P -> R :: 1,2,HS' },
-    ],
-    '대우 규칙': [
-        { problem: 'P -> Q // ~Q -> ~P', answer: '~Q -> ~P :: 1,CP' },
-        { problem: 'P -> ~Q // Q -> ~P', answer: 'Q -> ~P :: 1,CP' },
-    ],
-    '약화': [
-        { problem: 'Q // P -> Q', answer: 'P -> Q :: 1,W' },
-    ],
-    '경우 논증': [
-        { problem: 'P v Q / P -> R / Q -> R // R', answer: 'R :: 1,2,3,AC' },
-        { problem: 'P v Q / P -> R / Q -> R // R', answer: 'P :: AS\nR / :: 2,4,>E\nQ :: AS\nR / :: 3,6,>E\nR :: 1,4-5,6-7,AC' },
-    ],
-    '교환 규칙': [
-        { problem: 'P v Q // Q v P', answer: 'Q v P :: 1,Com' },
-        { problem: 'P & Q // Q & P', answer: 'Q & P :: 1,Com' },
-    ],
-    '결합 규칙': [
-        { problem: 'P v (Q v R) // (P v Q) v R', answer: '(P v Q) v R :: 1,Asso' },
-        { problem: '(P v Q) v R // P v (Q v R)', answer: 'P v (Q v R) :: 1,Asso' },
-        { problem: 'P & (Q & R) // (P & Q) & R', answer: '(P & Q) & R :: 1,Asso' },
-        { problem: '(P & Q) & R // P & (Q & R)', answer: 'P & (Q & R) :: 1,Asso' },
-    ],
-    '분배 규칙': [
-        { problem: 'P & (Q v R) // (P & Q) v (P & R)', answer: '(P & Q) v (P & R) :: 1,Dist' },
-        { problem: '(P & Q) v (P & R) // P & (Q v R)', answer: 'P & (Q v R) :: 1,Dist' },
-        { problem: 'P v (Q & R) // (P v Q) & (P v R)', answer: '(P v Q) & (P v R) :: 1,Dist' },
-        { problem: '(P v Q) & (P v R) // P v (Q & R)', answer: 'P v (Q & R) :: 1,Dist' },
-    ],
-    '드 모르간의 규칙': [
-        { problem: '~(P v Q) // ~P & ~Q', answer: '~P & ~Q :: 1,DeM' },
-        { problem: '~P & ~Q // ~(P v Q)', answer: '~(P v Q) :: 1,DeM' },
-        { problem: '~(P & Q) // ~P v ~Q', answer: '~P v ~Q :: 1,DeM' },
-        { problem: '~P v ~Q // ~(P & Q)', answer: '~(P & Q) :: 1,DeM' },
-    ],
-    '조건문 규칙': [
-        { problem: 'P -> Q // ~P v Q', answer: '~P v Q :: 1,Cond' },
-        { problem: '~P v Q // P -> Q', answer: 'P -> Q :: 1,Cond' },
-        { problem: '~(P -> Q) // P & ~Q', answer: 'P & ~Q :: 1,Cond' },
-        { problem: 'P & ~Q // ~(P -> Q)', answer: '~(P -> Q) :: 1,Cond' },
-    ],
-    '배중률': [
-        { problem: '// P v ~P', answer: 'P v ~P :: LEM' },
-    ],
-    '존재 양화사의 부정': [
-        { problem: '~(exists x)Fx // (forall x)~Fx', answer: '(forall x)~Fx :: 1,~E' },
-        { problem: '(forall x)~Fx // ~(exists x)Fx', answer: '~(exists x)Fx :: 1,~E' },
-    ],
-    '보편 양화사의 부정': [
-        { problem: '~(forall x)Fx // (exists x)~Fx', answer: '(exists x)~Fx :: 1,~A' },
-        { problem: '(exists x)~Fx // ~(forall x)Fx', answer: '~(forall x)Fx :: 1,~A' },
-    ],
-};
 
 function getRuleCardName(ruleCard) {
     const heading = ruleCard.querySelector('h3');
@@ -5832,24 +5735,261 @@ function getRuleCardName(ruleCard) {
     return heading.textContent.replace(alias, '').trim();
 }
 
-function setupRuleSchemeExamples() {
+const ruleExampleApiUrl = new URL('api/rule-examples.php', document.baseURI);
+const ruleExampleCache = new Map();
+const guideExampleApiUrl = new URL('api/guide-examples.php', document.baseURI);
+const exerciseApiUrl = new URL('api/exercises.php', document.baseURI);
+const exerciseCache = new Map();
+
+async function requestRuleExampleData(exampleId = null) {
+    const requestUrl = new URL(ruleExampleApiUrl);
+
+    if (exampleId !== null) {
+        requestUrl.searchParams.set('id', String(exampleId));
+    }
+
+    const response = await fetch(requestUrl, {
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(payload.error || '예제 데이터를 불러오지 못했습니다.');
+    }
+
+    return payload;
+}
+
+async function loadRuleExampleById(exampleId, options = {}) {
+    let example = ruleExampleCache.get(exampleId);
+
+    if (!example) {
+        example = await requestRuleExampleData(exampleId);
+        ruleExampleCache.set(exampleId, example);
+    }
+
+    const didLoad = loadRuleExample(example.problem, example.answer, {
+        title: [
+            example.category,
+            example.section,
+            example.title,
+        ].filter(Boolean).join(' / '),
+        updateUrl: false,
+    });
+
+    if (didLoad && options.updateUrl !== false) {
+        updateRuleExampleUrl(exampleId);
+    }
+
+    return didLoad;
+}
+
+async function loadRuleExampleFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const rawExampleId = params.get('example');
+
+    if (rawExampleId === null) {
+        return false;
+    }
+
+    const exampleId = Number(rawExampleId);
+
+    if (!Number.isInteger(exampleId) || exampleId < 1) {
+        window.alert('올바른 example id가 필요합니다.');
+        return false;
+    }
+
+    try {
+        return await loadRuleExampleById(exampleId, {
+            updateUrl: false,
+        });
+    } catch (error) {
+        console.error(error);
+        window.alert(error.message || '예제를 불러오지 못했습니다.');
+        return false;
+    }
+}
+
+async function requestGuideExampleData(exampleId = null) {
+    const requestUrl = new URL(guideExampleApiUrl);
+
+    if (exampleId !== null) {
+        requestUrl.searchParams.set('id', String(exampleId));
+    }
+
+    const response = await fetch(requestUrl, {
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(payload.error || '입력 가이드 예제를 불러오지 못했습니다.');
+    }
+
+    return payload;
+}
+
+async function requestExerciseData(exerciseId) {
+    const requestUrl = new URL(exerciseApiUrl);
+    requestUrl.searchParams.set('id', String(exerciseId));
+
+    const response = await fetch(requestUrl, {
+        headers: {
+            Accept: 'application/json',
+        },
+    });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(payload.error || '연습문제를 불러오지 못했습니다.');
+    }
+
+    return payload;
+}
+
+async function loadExerciseById(exerciseId) {
+    let exercise = exerciseCache.get(exerciseId);
+
+    if (!exercise) {
+        exercise = await requestExerciseData(exerciseId);
+        exerciseCache.set(exerciseId, exercise);
+    }
+
+    return loadRuleExample(exercise.problem, '', {
+        title: [
+            exercise.category,
+            exercise.section,
+            exercise.title,
+        ].filter(Boolean).join(' / '),
+        updateUrl: false,
+    });
+}
+
+async function loadExerciseFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const rawExerciseId = params.get('problem');
+
+    if (rawExerciseId === null) {
+        return false;
+    }
+
+    const exerciseId = Number(rawExerciseId);
+
+    if (!Number.isInteger(exerciseId) || exerciseId < 1) {
+        window.alert('올바른 problem id가 필요합니다.');
+        return false;
+    }
+
+    try {
+        return await loadExerciseById(exerciseId);
+    } catch (error) {
+        console.error(error);
+        window.alert(error.message || '연습문제를 불러오지 못했습니다.');
+        return false;
+    }
+}
+
+async function setupGuideExamples() {
+    const guide = document.querySelector('.input-guide');
+
+    if (!guide) {
+        return;
+    }
+
+    let payload;
+
+    try {
+        payload = await requestGuideExampleData();
+    } catch (error) {
+        console.error(error);
+        return;
+    }
+
+    const examplesByKey = new Map(
+        payload.examples.map((example) => [example.key, example]),
+    );
+
+    guide.querySelectorAll('[data-guide-key]').forEach((trigger) => {
+        const example = examplesByKey.get(trigger.dataset.guideKey);
+
+        if (!example) {
+            return;
+        }
+
+        trigger.dataset.guideExampleId = String(example.id);
+
+        if (trigger.matches('a')) {
+            trigger.href = `${window.location.pathname}?example=${example.id}`;
+        }
+    });
+}
+
+async function activateGuideExample(trigger) {
+    const exampleId = Number(trigger.dataset.guideExampleId);
+
+    if (!Number.isInteger(exampleId) || exampleId < 1 || trigger.dataset.exampleLoading === 'true') {
+        return;
+    }
+
+    trigger.dataset.exampleLoading = 'true';
+    trigger.setAttribute('aria-busy', 'true');
+
+    try {
+        const didLoad = await loadRuleExampleById(exampleId);
+
+        if (didLoad) {
+            document.querySelector('#proof-editor')?.scrollIntoView({ block: 'start' });
+        }
+    } catch (error) {
+        console.error(error);
+        window.alert(error.message || '입력 가이드 예제를 불러오지 못했습니다.');
+    } finally {
+        delete trigger.dataset.exampleLoading;
+        trigger.removeAttribute('aria-busy');
+    }
+}
+
+async function setupRuleSchemeExamples() {
     const rulesPanels = document.querySelectorAll('.rules-panel');
 
     if (rulesPanels.length === 0) {
         return;
     }
 
+    let payload;
+
+    try {
+        payload = await requestRuleExampleData();
+    } catch (error) {
+        console.error(error);
+        return;
+    }
+
+    const examplesByRule = new Map();
+
+    payload.examples.forEach((example) => {
+        if (!examplesByRule.has(example.rule)) {
+            examplesByRule.set(example.rule, new Map());
+        }
+
+        examplesByRule.get(example.rule).set(example.variantIndex, example);
+    });
+
     rulesPanels.forEach((rulesPanel) => {
         rulesPanel.querySelectorAll('.rule-card').forEach((ruleCard) => {
             const ruleName = getRuleCardName(ruleCard);
-            const examples = ruleSchemeExamples[ruleName];
+            const examples = examplesByRule.get(ruleName);
 
             if (!examples) {
                 return;
             }
 
             ruleCard.querySelectorAll('.rule-scheme').forEach((scheme, index) => {
-                const example = examples[index];
+                const example = examples.get(index);
 
                 if (!example) {
                     return;
@@ -5859,16 +5999,35 @@ function setupRuleSchemeExamples() {
                 scheme.tabIndex = 0;
                 scheme.setAttribute('role', 'button');
                 scheme.setAttribute('aria-label', `${ruleName} 예제 불러오기`);
-                scheme.dataset.exampleProblem = example.problem;
-                scheme.dataset.exampleAnswer = example.answer;
+                scheme.dataset.exampleId = String(example.id);
             });
         });
     });
 }
 
-function activateRuleSchemeExample(scheme) {
-    loadRuleExample(scheme.dataset.exampleProblem, scheme.dataset.exampleAnswer);
-    document.querySelector('#proof-editor')?.scrollIntoView({ block: 'start' });
+async function activateRuleSchemeExample(scheme) {
+    const exampleId = Number(scheme.dataset.exampleId);
+
+    if (!Number.isInteger(exampleId) || exampleId < 1 || scheme.dataset.exampleLoading === 'true') {
+        return;
+    }
+
+    scheme.dataset.exampleLoading = 'true';
+    scheme.setAttribute('aria-busy', 'true');
+
+    try {
+        const didLoad = await loadRuleExampleById(exampleId);
+
+        if (didLoad) {
+            document.querySelector('#proof-editor')?.scrollIntoView({ block: 'start' });
+        }
+    } catch (error) {
+        console.error(error);
+        window.alert(error.message || '예제를 불러오지 못했습니다.');
+    } finally {
+        delete scheme.dataset.exampleLoading;
+        scheme.removeAttribute('aria-busy');
+    }
 }
 
 function parseProofFormulaInput(rawFormula) {
@@ -6581,7 +6740,7 @@ document.querySelectorAll('.rules-panel').forEach((rulesPanel) => {
         }
 
         event.preventDefault();
-        activateRuleSchemeExample(scheme);
+        void activateRuleSchemeExample(scheme);
     });
 
     rulesPanel.addEventListener('keydown', (event) => {
@@ -6596,12 +6755,12 @@ document.querySelectorAll('.rules-panel').forEach((rulesPanel) => {
         }
 
         event.preventDefault();
-        activateRuleSchemeExample(scheme);
+        void activateRuleSchemeExample(scheme);
     });
 });
 
 document.querySelector('.input-guide')?.addEventListener('click', (event) => {
-    const trigger = event.target.closest('.input-guide-example-trigger');
+    const trigger = event.target.closest('[data-guide-key]');
 
     if (!trigger) {
         return;
@@ -6609,8 +6768,7 @@ document.querySelector('.input-guide')?.addEventListener('click', (event) => {
 
     event.preventDefault();
     event.stopPropagation();
-    loadRuleExample(trigger.dataset.exampleProblem, trigger.dataset.exampleAnswer);
-    document.querySelector('#proof-editor')?.scrollIntoView({ block: 'start' });
+    void activateGuideExample(trigger);
 });
 
 ruleTextInput.addEventListener('input', () => {
@@ -6634,12 +6792,15 @@ if ('ResizeObserver' in window) {
 
 document.fonts?.ready.then(scheduleProofColumnLayout);
 
-setupRuleSchemeExamples();
+void setupRuleSchemeExamples();
+void setupGuideExamples();
 updateRuleSelection('');
 const didLoadProblemFromUrl = loadProblemFromUrl();
 renderProofLines();
 updateActiveLineMarker();
 updateEntryState();
+void loadRuleExampleFromUrl();
+void loadExerciseFromUrl();
 
 if (didLoadProblemFromUrl) {
     focusFormulaInput();

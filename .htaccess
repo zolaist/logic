@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{THE_REQUEST} \s/+(\?view=exercises|index\.php\?view=exercises) [NC]
+    RewriteRule ^(?:index\.php)?$ excercises? [R=302,L]
+
+    RewriteRule ^(?:excercises|exercises)/?$ index.php?view=exercises [L,QSA]
+</IfModule>
