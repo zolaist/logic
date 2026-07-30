@@ -80,22 +80,17 @@ function getLogicDatabase(): PDO
     return $database;
 }
 
-function getLogicDataStore()
+function getLogicDataStore(): PDO
 {
-    static $store = null;
+    static $database = null;
 
-    if ($store !== null) {
-        return $store;
+    if ($database instanceof PDO) {
+        return $database;
     }
 
-    try {
-        $store = getLogicDatabase();
-    } catch (Throwable $error) {
-        error_log('MariaDB unavailable; using seed JSON fallback: ' . $error->getMessage());
-        $store = new LogicSeedStore();
-    }
+    $database = getLogicDatabase();
 
-    return $store;
+    return $database;
 }
 
 function initializeLogicDatabase(PDO $database): void
