@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+const LOGIC_DATABASE_SETUP_LOCK = 'logic_app_database_setup';
+const LOGIC_DATABASE_SCHEMA_VERSION = '20260731_remove_logic_type_columns';
+
 function loadLogicDatabaseEnvironment(): void
 {
     static $loaded = false;
@@ -75,8 +78,6 @@ function getLogicDatabase(): PDO
         PDO::ATTR_EMULATE_PREPARES => false,
     ]);
 
-    initializeLogicDatabase($database);
-
     return $database;
 }
 
@@ -95,19 +96,61 @@ function getLogicDataStore(): PDO
 
 function initializeLogicDatabase(PDO $database): void
 {
-    $schema = file_get_contents(__DIR__ . '/schema.sql');
+    withLogicDatabaseSetupLock($database, static function () use ($database): void {
+        $schema = file_get_contents(__DIR__ . '/schema.sql');
 
-    if ($schema === false) {
-        throw new RuntimeException('MariaDB 스키마를 읽을 수 없습니다.');
+        if ($schema === false) {
+            throw new RuntimeException('MariaDB 스키마를 읽을 수 없습니다.');
+        }
+
+        foreach (array_filter(array_map('trim', explode(';', $schema))) as $statement) {
+            $database->exec($statement);
+        }
+
+        applyLogicDatabaseMigrations($database);
+        ensureDefaultAdminUser($database);
+        seedLogicDatabaseIfEmpty($database);
+    });
+}
+
+function withLogicDatabaseSetupLock(PDO $database, callable $callback): void
+{
+    $lockStatement = $database->prepare('SELECT GET_LOCK(:lock_name, 30)');
+    $lockStatement->execute([':lock_name' => LOGIC_DATABASE_SETUP_LOCK]);
+
+    if ((int) $lockStatement->fetchColumn() !== 1) {
+        throw new RuntimeException('MariaDB 초기화 잠금을 얻지 못했습니다.');
     }
 
-    foreach (array_filter(array_map('trim', explode(';', $schema))) as $statement) {
-        $database->exec($statement);
+    try {
+        $callback();
+    } finally {
+        try {
+            $releaseStatement = $database->prepare('SELECT RELEASE_LOCK(:lock_name)');
+            $releaseStatement->execute([':lock_name' => LOGIC_DATABASE_SETUP_LOCK]);
+        } catch (Throwable $error) {
+            error_log($error->__toString());
+        }
+    }
+}
+
+function applyLogicDatabaseMigrations(PDO $database): void
+{
+    $statement = $database->prepare(
+        'SELECT COUNT(*) FROM logic_schema_migrations WHERE version = :version'
+    );
+    $statement->execute([':version' => LOGIC_DATABASE_SCHEMA_VERSION]);
+
+    if ((int) $statement->fetchColumn() > 0) {
+        return;
     }
 
     removeLogicTypeColumns($database);
-    ensureDefaultAdminUser($database);
-    seedLogicDatabaseIfEmpty($database);
+
+    $insertMigration = $database->prepare(
+        'INSERT INTO logic_schema_migrations (version) VALUES (:version)'
+    );
+    $insertMigration->execute([':version' => LOGIC_DATABASE_SCHEMA_VERSION]);
 }
 
 function tableColumnExists(PDO $database, string $table, string $column): bool
@@ -146,15 +189,15 @@ function tableIndexExists(PDO $database, string $table, string $index): bool
 
 function removeLogicTypeColumns(PDO $database): void
 {
-    if (tableIndexExists($database, 'problems', 'idx_problems_logic_type')) {
-        $database->exec('ALTER TABLE problems DROP INDEX idx_problems_logic_type');
-    }
-
-    if (tableIndexExists($database, 'problems', 'idx_problems_problem_lookup')) {
-        $database->exec('ALTER TABLE problems DROP INDEX idx_problems_problem_lookup');
-    }
-
     if (tableColumnExists($database, 'problems', 'logic_type')) {
+        if (tableIndexExists($database, 'problems', 'idx_problems_logic_type')) {
+            $database->exec('ALTER TABLE problems DROP INDEX idx_problems_logic_type');
+        }
+
+        if (tableIndexExists($database, 'problems', 'idx_problems_problem_lookup')) {
+            $database->exec('ALTER TABLE problems DROP INDEX idx_problems_problem_lookup');
+        }
+
         $database->exec('ALTER TABLE problems DROP COLUMN logic_type');
     }
 

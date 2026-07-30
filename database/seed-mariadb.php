@@ -11,6 +11,7 @@ require_once __DIR__ . '/database.php';
 
 try {
     $database = getLogicDatabase();
+    initializeLogicDatabase($database);
     reseedLogicDatabase($database);
 
     $counts = [

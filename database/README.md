@@ -29,7 +29,18 @@ GRANT ALL PRIVILEGES ON logic_app.* TO 'logic_app'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-Seed the MariaDB database from the JSON seed files:
+Create or migrate the schema and seed an empty database:
+
+```sh
+php database/migrate-mariadb.php
+```
+
+Run this command once during deployment, before serving the new application
+version. Web requests only open a database connection and never create tables,
+alter indexes, or seed content.
+
+To discard the current example and exercise content and reseed MariaDB from the
+JSON seed files:
 
 ```sh
 php database/seed-mariadb.php
@@ -41,7 +52,8 @@ Verify schema creation, seed counts, and example/exercise insert-update-delete:
 php database/verify-mariadb.php
 ```
 
-The seed JSON files were regenerated from `database/logic.sqlite`, so the current SQLite examples and exercises are the MariaDB seed source.
+`seed-mariadb.php` is destructive for managed example and exercise content.
+The seed JSON files are the MariaDB seed source.
 
 Content management:
 

@@ -18,6 +18,7 @@ function verify(bool $condition, string $message): void
 
 try {
     $database = getLogicDatabase();
+    initializeLogicDatabase($database);
     reseedLogicDatabase($database);
 
     $counts = [
