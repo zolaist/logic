@@ -215,6 +215,19 @@ function getOpenedArbitraryNameSubproof(proofLine, subproofId = null) {
     return subproofs[subproofs.length - 1] || null;
 }
 
+function getDuplicateArbitraryNameIntro(proofLine) {
+    const activeNames = new Set(proofLine.parentArbitraryNames || []);
+
+    return getProofLineArbitraryNames(proofLine).find((arbitraryName) => {
+        if (activeNames.has(arbitraryName)) {
+            return true;
+        }
+
+        activeNames.add(arbitraryName);
+        return false;
+    }) || '';
+}
+
 function parseTermSequence(source) {
     const terms = [];
     let rest = source;
@@ -1689,6 +1702,69 @@ function canInstantiateWithAnyName(schemaAst, variable, targetAst) {
         .some((name) => sameFormulaAst(
             substituteTermInAst(schemaAst, variable, name),
             targetAst,
+        ));
+}
+
+function replaceNameWithVariableInAst(ast, name, variable) {
+    if (!ast) {
+        return ast;
+    }
+
+    if (ast.type === tokenTypes.ATOM || ast.type === tokenTypes.FALSUM) {
+        return { ...ast };
+    }
+
+    if (ast.type === tokenTypes.PREDICATE) {
+        const parts = getAtomicFormulaParts(ast.value);
+        const terms = parts.terms
+            .map((term) => (term === name ? variable : term))
+            .join('');
+        return {
+            ...ast,
+            value: `${parts.predicate}${terms}`,
+        };
+    }
+
+    if (ast.type === tokenTypes.EQUAL) {
+        return {
+            ...ast,
+            leftTerm: ast.leftTerm === name ? variable : ast.leftTerm,
+            rightTerm: ast.rightTerm === name ? variable : ast.rightTerm,
+        };
+    }
+
+    if (ast.type === tokenTypes.NOT) {
+        return {
+            ...ast,
+            operand: replaceNameWithVariableInAst(ast.operand, name, variable),
+        };
+    }
+
+    if (ast.type === tokenTypes.QUANTIFIER) {
+        if (ast.variable === variable) {
+            return { ...ast };
+        }
+
+        return {
+            ...ast,
+            operand: replaceNameWithVariableInAst(ast.operand, name, variable),
+        };
+    }
+
+    return {
+        ...ast,
+        left: replaceNameWithVariableInAst(ast.left, name, variable),
+        right: replaceNameWithVariableInAst(ast.right, name, variable),
+    };
+}
+
+function canGeneralizeAnyNameAsExistential(schemaAst, variable, targetAst) {
+    const candidateNames = new Set(collectNameTermsFromAst(targetAst));
+
+    return [...candidateNames]
+        .some((name) => sameFormulaAst(
+            replaceNameWithVariableInAst(targetAst, name, variable),
+            schemaAst,
         ));
 }
 
@@ -4173,7 +4249,7 @@ function validateExistentialIntro(proofLine, lines) {
         return invalidRuleResult('∃ 도입의 도출문은 (∃x)A 형태여야 합니다.');
     }
 
-    return canInstantiateWithAnyName(
+    return canGeneralizeAnyNameAsExistential(
         conclusion.ast.operand,
         conclusion.ast.variable,
         referencedFormula.ast,
@@ -4449,6 +4525,12 @@ function validateProofLineRule(proofLine, lines) {
         return skippedRuleResult();
     }
 
+    const duplicateArbitraryName = getDuplicateArbitraryNameIntro(proofLine);
+
+    if (duplicateArbitraryName) {
+        return invalidRuleResult(`임의 이름 ${duplicateArbitraryName}은 이미 상위 보조증명에서 사용 중입니다.`);
+    }
+
     if (proofLine.rule === '전제') {
         return validRuleResult('전제는 별도 검사가 필요하지 않습니다.');
     }
@@ -4664,6 +4746,9 @@ function refreshSubproofStructure(lines) {
         proofLine.openedArbitraryNameSubproofs = [];
         proofLine.arbitraryNameSubproofPath = '';
         proofLine.arbitraryNameDepth = 0;
+        proofLine.parentArbitraryNames = openAssumptions
+            .filter((assumption) => assumption.kind === 'arbitraryName')
+            .map((assumption) => assumption.name);
         proofLine.subproofGuideEntries = [];
         proofLine.contentIndent = 0;
         proofLine.currentSubproofLeft = SUBPROOF_GUIDE_LEFT_START;
@@ -6084,6 +6169,7 @@ function buildProofLine(lineNumber, rawFormula, rule, refs, options = {}) {
         openedArbitraryNameSubproofs: [],
         arbitraryNameSubproofPath: '',
         arbitraryNameDepth: 0,
+        parentArbitraryNames: [],
         subproofGuideEntries: [],
         contentIndent: 0,
         currentSubproofLeft: SUBPROOF_GUIDE_LEFT_START,

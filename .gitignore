@@ -5,3 +5,5 @@
 database/*.sqlite
 database/*.sqlite-shm
 database/*.sqlite-wal
+database/admin-auth.json
+database/mariadb.env

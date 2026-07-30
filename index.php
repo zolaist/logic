@@ -2,16 +2,21 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . "/database/database.php";
+require_once __DIR__ . '/auth.php';
 
-$requestPath = trim((string) parse_url($_SERVER["REQUEST_URI"] ?? "", PHP_URL_PATH), "/");
-$requestPage = basename($requestPath);
-$isExercisesView = ($_GET["view"] ?? "") === "exercises"
-    || $requestPage === "excercises"
-    || $requestPage === "exercises";
+$currentPath = (string) ($_SERVER['REQUEST_URI'] ?? './');
+$encodedCurrentPath = htmlspecialchars(urlencode($currentPath), ENT_QUOTES, 'UTF-8');
+$currentUser = currentLogicUser();
+$isAdmin = currentLogicUserIsAdmin();
+$isLoggedIn = $currentUser !== null;
+$currentView = (string) ($_GET['view'] ?? '');
+$isExercisesView = $currentView === 'exercises';
+$isAboutView = $currentView === 'about';
 $exerciseCategories = $isExercisesView
-    ? getExerciseCatalog(getLogicDatabase())
+    ? getExerciseCatalog(getLogicDataStore())
     : [];
+$siteTitle = '기호논리학 실습실';
+$pagePrefix = $isExercisesView ? '연습문제 - ' : ($isAboutView ? '일러두기 - ' : '');
 
 ?>
 <!doctype html>
@@ -19,22 +24,35 @@ $exerciseCategories = $isExercisesView
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $isExercisesView ? '연습문제 - ' : '' ?>자연 연역 실험실</title>
+    <title><?= $pagePrefix ?><?= $siteTitle ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/app.css?v=stix-two-math-20260724">
+    <link rel="stylesheet" href="assets/app.css?v=gray-tagline-20260730">
 </head>
 <body>
     <main class="app-shell">
         <header class="topbar">
             <div class="header-copy">
-                <p class="eyebrow">기호논리학</p>
-                <h1><a class="site-title-link" href="./">자연 연역 실험실</a></h1>
-                <p class="site-description">이 곳에서는 이병덕의 『코어논리학 : 논리적 추론과 증명 테크닉』(성균관대학교출판부, 2019)의 문법과 추론 규칙에 기반하여 자연 연역을 구성하고 검증할 수 있습니다.</p>
+                <h1><a class="site-title-link" href="./"><?= $siteTitle ?></a></h1>
+                <p class="site-tagline">Symbolic Logic Lab</p>
                 <nav class="site-nav" aria-label="주요 메뉴">
-                    <a class="<?= $isExercisesView ? '' : 'is-active' ?>" href="./">증명 편집기</a>
-                    <a class="<?= $isExercisesView ? 'is-active' : '' ?>" href="excercises">연습문제</a>
+                    <div class="site-nav-links">
+                        <a class="<?= (!$isExercisesView && !$isAboutView) ? 'is-active' : '' ?>" href="./">자연 연역 검증기</a>
+                        <a class="<?= $isExercisesView ? 'is-active' : '' ?>" href="?view=exercises">연습문제</a>
+                        <a class="<?= $isAboutView ? 'is-active' : '' ?>" href="?view=about">일러두기</a>
+                    </div>
+                    <div class="auth-box" aria-label="로그인 상태">
+                        <?php if ($isLoggedIn): ?>
+                            <span class="auth-user"><?= htmlspecialchars((string) ($currentUser['username'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php if ($isAdmin): ?>
+                                <a href="admin.php">관리자</a>
+                            <?php endif; ?>
+                            <a href="admin.php?action=logout&amp;return=<?= $encodedCurrentPath ?>">로그아웃</a>
+                        <?php else: ?>
+                            <a href="admin.php?return=<?= $encodedCurrentPath ?>">로그인</a>
+                        <?php endif; ?>
+                    </div>
                 </nav>
             </div>
         </header>
@@ -49,7 +67,7 @@ $exerciseCategories = $isExercisesView
                         <h3><?= htmlspecialchars($section['title'], ENT_QUOTES, 'UTF-8') ?></h3>
                         <div class="example-list">
                             <?php foreach ($section['items'] as $example): ?>
-                                <a class="example-card" href="../?problem=<?= (int) $example['id'] ?>">
+                                <a class="example-card" href="?problem=<?= (int) $example['id'] ?>">
                                     <h4><?= htmlspecialchars($example['title'], ENT_QUOTES, 'UTF-8') ?></h4>
                                     <p><?= htmlspecialchars($example['problem'], ENT_QUOTES, 'UTF-8') ?></p>
                                 </a>
@@ -60,6 +78,31 @@ $exerciseCategories = $isExercisesView
                 </article>
             <?php endforeach; ?>
         </div>
+        <?php elseif ($isAboutView): ?>
+        <article class="about-page">
+            <section class="about-card">
+                <h2>일러두기</h2>
+                <p>기호논리학 실습실은 기호논리학을 배우는 과정에서 증명 줄을 직접 써 보고, 각 줄이 주어진 추론 규칙에 부합하는지 즉시 확인해 볼 수 있도록 만든 작은 웹앱입니다. 종이에 증명을 쓰는 연습을 대신하기보다는, 규칙 적용의 감각을 더 자주 시험해 보고 스스로 오류를 찾는 데 도움을 주는 보조 도구로 생각해 주세요.</p>
+                <p>이 앱은 이병덕의 『코어논리학 : 논리적 추론과 증명 테크닉』의 문법과 추론 규칙을 기본 기준으로 삼습니다. 다만 웹에서 입력하고 자동 검증하는 환경에 맞추기 위해 일부 표기와 처리 방식은 교재의 서술과 완전히 같지 않을 수 있습니다.</p>
+            </section>
+
+            <section class="about-card">
+                <h2>교재와의 차이</h2>
+                <p>이 웹앱은 기본적으로 『코어 논리학』의 문법과 추론 규칙을 최대한 따르려고 했지만, 사용성과 확장성을 위해 두 가지는 교재를 따르지 않았습니다.</p>
+                <ul>
+                    <li><strong>~~ 제거 규칙</strong>: 이 규칙은 교재에서는 "~ 제거" 규칙으로 소개되어 있으나, 그에 따른 자연스러운 약식 표기 "~E"가 "존재 양화사의 부정" 규칙의 약식 표기와 혼동될 여지가 있어, 아예 "~~ 제거" 규칙으로 이름을 바꾸고 약식 표기도 "~~E"로 결정했습니다.</li>
+                    <li><strong>⊥ 도입 규칙</strong>: 교재에서는 모순(⊥, bottom) 기호를 전혀 도입하지 않고 있으나, 존재 양화사 제거 규칙의 엄격하면서도 제대로 된 활용을 위해 모순 기호가 필요하다는 점을 인지하고 "⊥ 도입" 규칙을 신설했습니다.</li>
+                </ul>
+            </section>
+
+            <section class="about-card">
+                <h2>개발자 정보와 피드백 안내</h2>
+                <ul>
+                    <li>개발자 홈페이지: <a href="https://zolaist.gnu.ac.kr/" target="_blank" rel="noopener">zolaist.gnu.ac.kr</a> | <a href="https://zolaist.org/wiki" target="_blank" rel="noopener">zolaist.org/wiki</a></li>
+                    <li>오류 신고 및 기능 요청: <a href="mailto:zolaist@gnu.ac.kr">zolaist@gnu.ac.kr</a></li>
+                </ul>
+            </section>
+        </article>
         <?php else: ?>
         <div class="workspace-layout">
             <div class="workspace-main">

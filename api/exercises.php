@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 try {
-    $database = getLogicDatabase();
+    $database = getLogicDataStore();
     $rawId = $_GET['id'] ?? null;
 
     if ($rawId === null) {
@@ -31,12 +31,24 @@ try {
         exit;
     }
 
+    if ($database instanceof LogicSeedStore) {
+        $exercise = $database->getExercise((int) $rawId);
+
+        if ($exercise === null) {
+            http_response_code(404);
+            echo json_encode(['error' => '해당 연습문제를 찾을 수 없습니다.'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        echo json_encode($exercise, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+
     $statement = $database->prepare(
         'SELECT
             entry.id,
             entry.title,
             problem.problem_text,
-            problem.logic_type,
             section.title AS section_title,
             category.title AS category_title
          FROM exercise_entries AS entry
@@ -61,7 +73,6 @@ try {
         'id' => (int) $exercise['id'],
         'title' => $exercise['title'],
         'problem' => $exercise['problem_text'],
-        'logicType' => $exercise['logic_type'],
         'section' => $exercise['section_title'],
         'category' => $exercise['category_title'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

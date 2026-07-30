@@ -23,12 +23,33 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
 }
 
 try {
-    $database = getLogicDatabase();
+    $database = getLogicDataStore();
     $requestedId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
     if (isset($_GET['id'])) {
         if ($requestedId === false || $requestedId === null || $requestedId < 1) {
             respondWithJson(['error' => '올바른 example id가 필요합니다.'], 400);
+        }
+
+        if ($database instanceof LogicSeedStore) {
+            $example = $database->findExample($requestedId, 'rule');
+
+            if ($example === null) {
+                respondWithJson(['error' => '해당 예제를 찾을 수 없습니다.'], 404);
+            }
+
+            respondWithJson([
+                'id' => (int) $example['id'],
+                'title' => $example['title'],
+                'category' => $example['category'],
+                'section' => $example['section'],
+                'kind' => $example['kind'],
+                'key' => $example['guideKey'],
+                'rule' => $example['ruleKey'],
+                'variantIndex' => (int) $example['variantIndex'],
+                'problem' => $example['problem'],
+                'answer' => $example['answer'],
+            ]);
         }
 
         $statement = $database->prepare(
@@ -68,6 +89,27 @@ try {
         ]);
     }
 
+    if ($database instanceof LogicSeedStore) {
+        $examples = $database->getRuleExamples();
+
+        usort($examples, static fn (array $a, array $b): int => [$a['ruleKey'], $a['variantIndex']] <=> [$b['ruleKey'], $b['variantIndex']]);
+        respondWithJson([
+            'examples' => array_map(
+                static fn (array $example): array => [
+                    'id' => (int) $example['id'],
+                    'title' => $example['title'],
+                    'category' => $example['category'],
+                    'section' => $example['section'],
+                    'kind' => $example['kind'],
+                    'key' => $example['guideKey'],
+                    'rule' => $example['ruleKey'],
+                    'variantIndex' => (int) $example['variantIndex'],
+                ],
+                $examples
+            ),
+        ]);
+    }
+
     $examples = $database
         ->query(
             "SELECT
@@ -81,7 +123,7 @@ try {
                 variant_index
              FROM problem_examples
              WHERE example_kind = 'rule'
-             ORDER BY rule_key COLLATE NOCASE ASC, variant_index ASC"
+             ORDER BY LOWER(rule_key) ASC, variant_index ASC"
         )
         ->fetchAll();
 

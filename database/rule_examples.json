@@ -1,582 +1,524 @@
 [
     {
-        "rule_key": "반복",
-        "variant_index": 0,
-        "problem": "P // P",
-        "answer": "P :: 1,R",
-        "logic_type": "propositional",
-        "title": "반복",
+        "title": "& 도입",
         "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
+        "section": "기본 규칙",
         "rule_key": "& 도입",
         "variant_index": 0,
         "problem": "P / Q // P & Q",
-        "answer": "P & Q :: 1,2,&I",
-        "logic_type": "propositional",
-        "title": "& 도입",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P & Q :: 1,2,&I"
     },
     {
+        "title": "& 제거 1",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "& 제거",
         "variant_index": 0,
         "problem": "P & Q // P",
-        "answer": "P :: 1,&E",
-        "logic_type": "propositional",
-        "title": "& 제거 1",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P :: 1,&E"
     },
     {
+        "title": "& 제거 2",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "& 제거",
         "variant_index": 1,
         "problem": "P & Q // Q",
-        "answer": "Q :: 1,&E",
-        "logic_type": "propositional",
-        "title": "& 제거 2",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "Q :: 1,&E"
     },
     {
-        "rule_key": "∨ 도입",
-        "variant_index": 0,
-        "problem": "P // P v Q",
-        "answer": "P v Q :: 1,vI",
-        "logic_type": "propositional",
-        "title": "∨ 도입 1",
+        "title": "→ 도입",
         "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "∨ 도입",
-        "variant_index": 1,
-        "problem": "P // Q v P",
-        "answer": "Q v P :: 1,vI",
-        "logic_type": "propositional",
-        "title": "∨ 도입 2",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "∨ 제거",
-        "variant_index": 0,
-        "problem": "P v Q / ~P // Q",
-        "answer": "Q :: 1,2,vE",
-        "logic_type": "propositional",
-        "title": "∨ 제거",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
+        "section": "기본 규칙",
         "rule_key": "→ 도입",
         "variant_index": 0,
         "problem": "// P -> P",
-        "answer": "P :: AS\nP / :: 1,R\nP -> P :: 1-2,>I",
-        "logic_type": "propositional",
-        "title": "→ 도입",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P :: AS\nP / :: 1,R\nP -> P :: 1-2,>I"
     },
     {
+        "title": "→ 제거",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "→ 제거",
         "variant_index": 0,
         "problem": "P -> Q / P // Q",
-        "answer": "Q :: 1,2,>E",
-        "logic_type": "propositional",
-        "title": "→ 제거",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "Q :: 1,2,>E"
     },
     {
+        "title": "↔ 도입 1",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "↔ 도입",
         "variant_index": 0,
         "problem": "P -> Q / Q -> P // P <-> Q",
-        "answer": "P <-> Q :: 1,2,<>I",
-        "logic_type": "propositional",
-        "title": "↔ 도입 1",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P <-> Q :: 1,2,<>I"
     },
     {
+        "title": "↔ 도입 2",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "↔ 도입",
         "variant_index": 1,
         "problem": "P -> Q / Q -> P // Q <-> P",
-        "answer": "Q <-> P :: 1,2,<>I",
-        "logic_type": "propositional",
-        "title": "↔ 도입 2",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "Q <-> P :: 1,2,<>I"
     },
     {
+        "title": "↔ 도입 3",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "↔ 도입",
         "variant_index": 2,
         "problem": "P -> Q / Q -> P // P <-> Q",
-        "answer": "P :: AS\nQ / :: 1,3,>E\nQ :: AS\nP / :: 2,5,>E\nP <-> Q :: 3-4,5-6,<>I",
-        "logic_type": "propositional",
-        "title": "↔ 도입 3",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P :: AS\nQ / :: 1,3,>E\nQ :: AS\nP / :: 2,5,>E\nP <-> Q :: 3-4,5-6,<>I"
     },
     {
+        "title": "↔ 제거 1",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "↔ 제거",
         "variant_index": 0,
         "problem": "P <-> Q // P -> Q",
-        "answer": "P -> Q :: 1,<>E",
-        "logic_type": "propositional",
-        "title": "↔ 제거 1",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "P -> Q :: 1,<>E"
     },
     {
+        "title": "↔ 제거 2",
+        "category": "문장 논리",
+        "section": "기본 규칙",
         "rule_key": "↔ 제거",
         "variant_index": 1,
         "problem": "P <-> Q // Q -> P",
-        "answer": "Q -> P :: 1,<>E",
-        "logic_type": "propositional",
-        "title": "↔ 제거 2",
-        "category": "문장 논리",
-        "section": "기본 규칙"
+        "answer": "Q -> P :: 1,<>E"
     },
     {
-        "rule_key": "~ 도입",
-        "variant_index": 0,
-        "problem": "P // ~~P",
-        "answer": "~P :: AS\n_ / :: 1,2,_I\n~~P :: 2-3,~I",
-        "logic_type": "propositional",
-        "title": "~ 도입 1",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "~ 도입",
-        "variant_index": 1,
-        "problem": "P // ~~P",
-        "answer": "~P :: AS\nP / :: 1,R\n~~P :: 2-3,~I",
-        "logic_type": "propositional",
-        "title": "~ 도입 2",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "~~ 제거",
-        "variant_index": 0,
-        "problem": "~~P // P",
-        "answer": "P :: 1,~~E",
-        "logic_type": "propositional",
-        "title": "~~ 제거",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "⊥ 도입",
-        "variant_index": 0,
-        "problem": "P / ~P // ⊥",
-        "answer": "⊥ :: 1,2,_I",
-        "logic_type": "propositional",
-        "title": "⊥ 도입",
-        "category": "문장 논리",
-        "section": "기본 규칙"
-    },
-    {
-        "rule_key": "∀ 제거",
-        "variant_index": 0,
-        "problem": "(forall x)Fx // Fa",
-        "answer": "Fa :: 1,AE",
-        "logic_type": "predicate",
-        "title": "∀ 제거",
+        "title": "∀ 도입",
         "category": "술어 논리",
-        "section": "기본 규칙"
-    },
-    {
+        "section": "기본 규칙",
         "rule_key": "∀ 도입",
         "variant_index": 0,
         "problem": "// (forall x)(Fx -> Fx)",
-        "answer": "[u] Fu :: AS\nFu / :: 1,R\nFu -> Fu / :: 1-2,>I\n(forall x)(Fx -> Fx) :: 1-3,AI",
-        "logic_type": "predicate",
-        "title": "∀ 도입",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "[u] Fu :: AS\nFu / :: 1,R\nFu -> Fu / :: 1-2,>I\n(forall x)(Fx -> Fx) :: 1-3,AI"
     },
     {
+        "title": "∀ 제거",
+        "category": "술어 논리",
+        "section": "기본 규칙",
+        "rule_key": "∀ 제거",
+        "variant_index": 0,
+        "problem": "(forall x)Fx // Fa",
+        "answer": "Fa :: 1,AE"
+    },
+    {
+        "title": "∃ 도입",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "∃ 도입",
         "variant_index": 0,
         "problem": "Fa // (exists x)Fx",
-        "answer": "(exists x)Fx :: 1,EI",
-        "logic_type": "predicate",
-        "title": "∃ 도입",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "(exists x)Fx :: 1,EI"
     },
     {
+        "title": "∃ 제거 1",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "∃ 제거",
         "variant_index": 0,
         "problem": "(exists x)Fx / (forall x)(Fx -> C) // C",
-        "answer": "C :: 1,2,EE",
-        "logic_type": "predicate",
-        "title": "∃ 제거 1",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "C :: 1,2,EE"
     },
     {
+        "title": "∃ 제거 2",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "∃ 제거",
         "variant_index": 1,
         "problem": "(exists x)Fx / (forall x)(Fx -> C) // C",
-        "answer": "[d] Fd :: AS (for 1, EE)\nFd -> C :: 2, AE\nC / :: 3, 4, >E\nC :: 1, 3-5, EE",
-        "logic_type": "predicate",
-        "title": "∃ 제거 2",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "[d] Fd :: AS (for 1, EE)\nFd -> C :: 2, AE\nC / :: 3, 4, >E\nC :: 1, 3-5, EE"
     },
     {
+        "title": "= 도입",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "= 도입",
         "variant_index": 0,
         "problem": "// a=a",
-        "answer": "a=a :: =I",
-        "logic_type": "predicate",
-        "title": "= 도입",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "a=a :: =I"
     },
     {
+        "title": "= 제거 1",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "= 제거",
         "variant_index": 0,
         "problem": "a=b / Fa // Fb",
-        "answer": "Fb :: 1,2,=E",
-        "logic_type": "predicate",
-        "title": "= 제거 1",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "Fb :: 1,2,=E"
     },
     {
+        "title": "= 제거 2",
+        "category": "술어 논리",
+        "section": "기본 규칙",
         "rule_key": "= 제거",
         "variant_index": 1,
         "problem": "a=b / Fb // Fa",
-        "answer": "Fa :: 1,2,=E",
-        "logic_type": "predicate",
-        "title": "= 제거 2",
-        "category": "술어 논리",
-        "section": "기본 규칙"
+        "answer": "Fa :: 1,2,=E"
     },
     {
+        "title": "~ 도입 1",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "~ 도입",
+        "variant_index": 0,
+        "problem": "P // ~~P",
+        "answer": "~P :: AS\n_ / :: 1,2,_I\n~~P :: 2-3,~I"
+    },
+    {
+        "title": "~ 도입 2",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "~ 도입",
+        "variant_index": 1,
+        "problem": "P // ~~P",
+        "answer": "~P :: AS\nP / :: 1,R\n~~P :: 2-3,~I"
+    },
+    {
+        "title": "~~ 도입",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "~~ 도입",
         "variant_index": 0,
         "problem": "P // ~~P",
-        "answer": "~~P :: 1,~~I",
-        "logic_type": "propositional",
-        "title": "~~ 도입",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "~~P :: 1,~~I"
     },
     {
-        "rule_key": "후건 부정",
+        "title": "~~ 제거",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "~~ 제거",
         "variant_index": 0,
-        "problem": "P -> Q / ~Q // ~P",
-        "answer": "~P :: 1,2,MT",
-        "logic_type": "propositional",
-        "title": "후건 부정 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "~~P // P",
+        "answer": "P :: 1,~~E"
     },
     {
-        "rule_key": "후건 부정",
+        "title": "∨ 도입 1",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "∨ 도입",
+        "variant_index": 0,
+        "problem": "P // P v Q",
+        "answer": "P v Q :: 1,vI"
+    },
+    {
+        "title": "∨ 도입 2",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "∨ 도입",
         "variant_index": 1,
-        "problem": "P -> ~Q / Q // ~P",
-        "answer": "~P :: 1,2,MT",
-        "logic_type": "propositional",
-        "title": "후건 부정 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P // Q v P",
+        "answer": "Q v P :: 1,vI"
     },
     {
-        "rule_key": "연쇄 논법",
+        "title": "∨ 제거",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "∨ 제거",
         "variant_index": 0,
-        "problem": "P -> Q / Q -> R // P -> R",
-        "answer": "P -> R :: 1,2,HS",
-        "logic_type": "propositional",
-        "title": "연쇄 논법",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P v Q / ~P // Q",
+        "answer": "Q :: 1,2,vE"
     },
     {
-        "rule_key": "대우 규칙",
+        "title": "⊥ 도입",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "⊥ 도입",
         "variant_index": 0,
-        "problem": "P -> Q // ~Q -> ~P",
-        "answer": "~Q -> ~P :: 1,CP",
-        "logic_type": "propositional",
-        "title": "대우 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P / ~P // ⊥",
+        "answer": "⊥ :: 1,2,_I"
     },
     {
-        "rule_key": "대우 규칙",
-        "variant_index": 1,
-        "problem": "P -> ~Q // Q -> ~P",
-        "answer": "Q -> ~P :: 1,CP",
-        "logic_type": "propositional",
-        "title": "대우 규칙 2",
+        "title": "결합 규칙 1",
         "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "약화",
-        "variant_index": 0,
-        "problem": "Q // P -> Q",
-        "answer": "P -> Q :: 1,W",
-        "logic_type": "propositional",
-        "title": "약화",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "경우 논증",
-        "variant_index": 0,
-        "problem": "P v Q / P -> R / Q -> R // R",
-        "answer": "R :: 1,2,3,AC",
-        "logic_type": "propositional",
-        "title": "경우 논증 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "경우 논증",
-        "variant_index": 1,
-        "problem": "P v Q / P -> R / Q -> R // R",
-        "answer": "P :: AS\nR / :: 2,4,>E\nQ :: AS\nR / :: 3,6,>E\nR :: 1,4-5,6-7,AC",
-        "logic_type": "propositional",
-        "title": "경우 논증 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "교환 규칙",
-        "variant_index": 0,
-        "problem": "P v Q // Q v P",
-        "answer": "Q v P :: 1,Com",
-        "logic_type": "propositional",
-        "title": "교환 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "교환 규칙",
-        "variant_index": 1,
-        "problem": "P & Q // Q & P",
-        "answer": "Q & P :: 1,Com",
-        "logic_type": "propositional",
-        "title": "교환 규칙 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
+        "section": "파생 규칙",
         "rule_key": "결합 규칙",
         "variant_index": 0,
         "problem": "P v (Q v R) // (P v Q) v R",
-        "answer": "(P v Q) v R :: 1,Asso",
-        "logic_type": "propositional",
-        "title": "결합 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "(P v Q) v R :: 1,Asso"
     },
     {
+        "title": "결합 규칙 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "결합 규칙",
         "variant_index": 1,
         "problem": "(P v Q) v R // P v (Q v R)",
-        "answer": "P v (Q v R) :: 1,Asso",
-        "logic_type": "propositional",
-        "title": "결합 규칙 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "P v (Q v R) :: 1,Asso"
     },
     {
+        "title": "결합 규칙 3",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "결합 규칙",
         "variant_index": 2,
         "problem": "P & (Q & R) // (P & Q) & R",
-        "answer": "(P & Q) & R :: 1,Asso",
-        "logic_type": "propositional",
-        "title": "결합 규칙 3",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "(P & Q) & R :: 1,Asso"
     },
     {
+        "title": "결합 규칙 4",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "결합 규칙",
         "variant_index": 3,
         "problem": "(P & Q) & R // P & (Q & R)",
-        "answer": "P & (Q & R) :: 1,Asso",
-        "logic_type": "propositional",
-        "title": "결합 규칙 4",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "P & (Q & R) :: 1,Asso"
     },
     {
-        "rule_key": "분배 규칙",
+        "title": "경우 논증 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "경우 논증",
         "variant_index": 0,
-        "problem": "P & (Q v R) // (P & Q) v (P & R)",
-        "answer": "(P & Q) v (P & R) :: 1,Dist",
-        "logic_type": "propositional",
-        "title": "분배 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P v Q / P -> R / Q -> R // R",
+        "answer": "R :: 1,2,3,AC"
     },
     {
-        "rule_key": "분배 규칙",
+        "title": "경우 논증 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "경우 논증",
         "variant_index": 1,
-        "problem": "(P & Q) v (P & R) // P & (Q v R)",
-        "answer": "P & (Q v R) :: 1,Dist",
-        "logic_type": "propositional",
-        "title": "분배 규칙 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P v Q / P -> R / Q -> R // R",
+        "answer": "P :: AS\nR / :: 2,4,>E\nQ :: AS\nR / :: 3,6,>E\nR :: 1,4-5,6-7,AC"
     },
     {
-        "rule_key": "분배 규칙",
-        "variant_index": 2,
-        "problem": "P v (Q & R) // (P v Q) & (P v R)",
-        "answer": "(P v Q) & (P v R) :: 1,Dist",
-        "logic_type": "propositional",
-        "title": "분배 규칙 3",
+        "title": "교환 규칙 1",
         "category": "문장 논리",
-        "section": "파생 규칙"
+        "section": "파생 규칙",
+        "rule_key": "교환 규칙",
+        "variant_index": 0,
+        "problem": "P v Q // Q v P",
+        "answer": "Q v P :: 1,Com"
     },
     {
-        "rule_key": "분배 규칙",
-        "variant_index": 3,
-        "problem": "(P v Q) & (P v R) // P v (Q & R)",
-        "answer": "P v (Q & R) :: 1,Dist",
-        "logic_type": "propositional",
-        "title": "분배 규칙 4",
+        "title": "교환 규칙 2",
         "category": "문장 논리",
-        "section": "파생 규칙"
+        "section": "파생 규칙",
+        "rule_key": "교환 규칙",
+        "variant_index": 1,
+        "problem": "P & Q // Q & P",
+        "answer": "Q & P :: 1,Com"
     },
     {
+        "title": "대우 규칙 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "대우 규칙",
+        "variant_index": 0,
+        "problem": "P -> Q // ~Q -> ~P",
+        "answer": "~Q -> ~P :: 1,CP"
+    },
+    {
+        "title": "대우 규칙 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "대우 규칙",
+        "variant_index": 1,
+        "problem": "P -> ~Q // Q -> ~P",
+        "answer": "Q -> ~P :: 1,CP"
+    },
+    {
+        "title": "드 모르간의 규칙 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "드 모르간의 규칙",
         "variant_index": 0,
         "problem": "~(P v Q) // ~P & ~Q",
-        "answer": "~P & ~Q :: 1,DeM",
-        "logic_type": "propositional",
-        "title": "드 모르간의 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "~P & ~Q :: 1,DeM"
     },
     {
+        "title": "드 모르간의 규칙 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "드 모르간의 규칙",
         "variant_index": 1,
         "problem": "~P & ~Q // ~(P v Q)",
-        "answer": "~(P v Q) :: 1,DeM",
-        "logic_type": "propositional",
-        "title": "드 모르간의 규칙 2",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "~(P v Q) :: 1,DeM"
     },
     {
+        "title": "드 모르간의 규칙 3",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "드 모르간의 규칙",
         "variant_index": 2,
         "problem": "~(P & Q) // ~P v ~Q",
-        "answer": "~P v ~Q :: 1,DeM",
-        "logic_type": "propositional",
-        "title": "드 모르간의 규칙 3",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "~P v ~Q :: 1,DeM"
     },
     {
+        "title": "드 모르간의 규칙 4",
+        "category": "문장 논리",
+        "section": "파생 규칙",
         "rule_key": "드 모르간의 규칙",
         "variant_index": 3,
         "problem": "~P v ~Q // ~(P & Q)",
-        "answer": "~(P & Q) :: 1,DeM",
-        "logic_type": "propositional",
-        "title": "드 모르간의 규칙 4",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "~(P & Q) :: 1,DeM"
     },
     {
-        "rule_key": "조건문 규칙",
+        "title": "반복",
+        "category": "문장 논리",
+        "section": "기본 규칙",
+        "rule_key": "반복",
         "variant_index": 0,
-        "problem": "P -> Q // ~P v Q",
-        "answer": "~P v Q :: 1,Cond",
-        "logic_type": "propositional",
-        "title": "조건문 규칙 1",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "problem": "P // P",
+        "answer": "P :: 1,R"
     },
     {
-        "rule_key": "조건문 규칙",
-        "variant_index": 1,
-        "problem": "~P v Q // P -> Q",
-        "answer": "P -> Q :: 1,Cond",
-        "logic_type": "propositional",
-        "title": "조건문 규칙 2",
+        "title": "배중률",
         "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "조건문 규칙",
-        "variant_index": 2,
-        "problem": "~(P -> Q) // P & ~Q",
-        "answer": "P & ~Q :: 1,Cond",
-        "logic_type": "propositional",
-        "title": "조건문 규칙 3",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "조건문 규칙",
-        "variant_index": 3,
-        "problem": "P & ~Q // ~(P -> Q)",
-        "answer": "~(P -> Q) :: 1,Cond",
-        "logic_type": "propositional",
-        "title": "조건문 규칙 4",
-        "category": "문장 논리",
-        "section": "파생 규칙"
-    },
-    {
+        "section": "파생 규칙",
         "rule_key": "배중률",
         "variant_index": 0,
         "problem": "// P v ~P",
-        "answer": "P v ~P :: LEM",
-        "logic_type": "propositional",
-        "title": "배중률",
-        "category": "문장 논리",
-        "section": "파생 규칙"
+        "answer": "P v ~P :: LEM"
     },
     {
-        "rule_key": "존재 양화사의 부정",
-        "variant_index": 0,
-        "problem": "~(exists x)Fx // (forall x)~Fx",
-        "answer": "(forall x)~Fx :: 1,~E",
-        "logic_type": "predicate",
-        "title": "존재 양화사의 부정 1",
+        "title": "보편 양화사의 부정 1",
         "category": "술어 논리",
-        "section": "파생 규칙"
-    },
-    {
-        "rule_key": "존재 양화사의 부정",
-        "variant_index": 1,
-        "problem": "(forall x)~Fx // ~(exists x)Fx",
-        "answer": "~(exists x)Fx :: 1,~E",
-        "logic_type": "predicate",
-        "title": "존재 양화사의 부정 2",
-        "category": "술어 논리",
-        "section": "파생 규칙"
-    },
-    {
+        "section": "파생 규칙",
         "rule_key": "보편 양화사의 부정",
         "variant_index": 0,
         "problem": "~(forall x)Fx // (exists x)~Fx",
-        "answer": "(exists x)~Fx :: 1,~A",
-        "logic_type": "predicate",
-        "title": "보편 양화사의 부정 1",
-        "category": "술어 논리",
-        "section": "파생 규칙"
+        "answer": "(exists x)~Fx :: 1,~A"
     },
     {
+        "title": "보편 양화사의 부정 2",
+        "category": "술어 논리",
+        "section": "파생 규칙",
         "rule_key": "보편 양화사의 부정",
         "variant_index": 1,
         "problem": "(exists x)~Fx // ~(forall x)Fx",
-        "answer": "~(forall x)Fx :: 1,~A",
-        "logic_type": "predicate",
-        "title": "보편 양화사의 부정 2",
+        "answer": "~(forall x)Fx :: 1,~A"
+    },
+    {
+        "title": "분배 규칙 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "분배 규칙",
+        "variant_index": 0,
+        "problem": "P & (Q v R) // (P & Q) v (P & R)",
+        "answer": "(P & Q) v (P & R) :: 1,Dist"
+    },
+    {
+        "title": "분배 규칙 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "분배 규칙",
+        "variant_index": 1,
+        "problem": "(P & Q) v (P & R) // P & (Q v R)",
+        "answer": "P & (Q v R) :: 1,Dist"
+    },
+    {
+        "title": "분배 규칙 3",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "분배 규칙",
+        "variant_index": 2,
+        "problem": "P v (Q & R) // (P v Q) & (P v R)",
+        "answer": "(P v Q) & (P v R) :: 1,Dist"
+    },
+    {
+        "title": "분배 규칙 4",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "분배 규칙",
+        "variant_index": 3,
+        "problem": "(P v Q) & (P v R) // P v (Q & R)",
+        "answer": "P v (Q & R) :: 1,Dist"
+    },
+    {
+        "title": "약화",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "약화",
+        "variant_index": 0,
+        "problem": "Q // P -> Q",
+        "answer": "P -> Q :: 1,W"
+    },
+    {
+        "title": "연쇄 논법",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "연쇄 논법",
+        "variant_index": 0,
+        "problem": "P -> Q / Q -> R // P -> R",
+        "answer": "P -> R :: 1,2,HS"
+    },
+    {
+        "title": "조건문 규칙 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "조건문 규칙",
+        "variant_index": 0,
+        "problem": "P -> Q // ~P v Q",
+        "answer": "~P v Q :: 1,Cond"
+    },
+    {
+        "title": "조건문 규칙 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "조건문 규칙",
+        "variant_index": 1,
+        "problem": "~P v Q // P -> Q",
+        "answer": "P -> Q :: 1,Cond"
+    },
+    {
+        "title": "조건문 규칙 3",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "조건문 규칙",
+        "variant_index": 2,
+        "problem": "~(P -> Q) // P & ~Q",
+        "answer": "P & ~Q :: 1,Cond"
+    },
+    {
+        "title": "조건문 규칙 4",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "조건문 규칙",
+        "variant_index": 3,
+        "problem": "P & ~Q // ~(P -> Q)",
+        "answer": "~(P -> Q) :: 1,Cond"
+    },
+    {
+        "title": "존재 양화사의 부정 1",
         "category": "술어 논리",
-        "section": "파생 규칙"
+        "section": "파생 규칙",
+        "rule_key": "존재 양화사의 부정",
+        "variant_index": 0,
+        "problem": "~(exists x)Fx // (forall x)~Fx",
+        "answer": "(forall x)~Fx :: 1,~E"
+    },
+    {
+        "title": "존재 양화사의 부정 2",
+        "category": "술어 논리",
+        "section": "파생 규칙",
+        "rule_key": "존재 양화사의 부정",
+        "variant_index": 1,
+        "problem": "(forall x)~Fx // ~(exists x)Fx",
+        "answer": "~(exists x)Fx :: 1,~E"
+    },
+    {
+        "title": "후건 부정 1",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "후건 부정",
+        "variant_index": 0,
+        "problem": "P -> Q / ~Q // ~P",
+        "answer": "~P :: 1,2,MT"
+    },
+    {
+        "title": "후건 부정 2",
+        "category": "문장 논리",
+        "section": "파생 규칙",
+        "rule_key": "후건 부정",
+        "variant_index": 1,
+        "problem": "P -> ~Q / Q // ~P",
+        "answer": "~P :: 1,2,MT"
     }
 ]

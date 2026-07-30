@@ -23,12 +23,30 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'GET') {
 }
 
 try {
-    $database = getLogicDatabase();
+    $database = getLogicDataStore();
     $requestedId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
     if (isset($_GET['id'])) {
         if ($requestedId === false || $requestedId === null || $requestedId < 1) {
             respondWithGuideExampleJson(['error' => '올바른 guide example id가 필요합니다.'], 400);
+        }
+
+        if ($database instanceof LogicSeedStore) {
+            $example = $database->findExample($requestedId, 'guide');
+
+            if ($example === null) {
+                respondWithGuideExampleJson(['error' => '해당 입력 가이드 예제를 찾을 수 없습니다.'], 404);
+            }
+
+            respondWithGuideExampleJson([
+                'id' => (int) $example['id'],
+                'key' => $example['guideKey'],
+                'title' => $example['title'],
+                'category' => $example['category'],
+                'section' => $example['section'],
+                'problem' => $example['problem'],
+                'answer' => $example['answer'],
+            ]);
         }
 
         $statement = $database->prepare(
@@ -59,6 +77,21 @@ try {
             'section' => $example['section_title'],
             'problem' => $example['problem_text'],
             'answer' => $example['answer_text'],
+        ]);
+    }
+
+    if ($database instanceof LogicSeedStore) {
+        respondWithGuideExampleJson([
+            'examples' => array_map(
+                static fn (array $example): array => [
+                    'id' => (int) $example['id'],
+                    'key' => $example['guideKey'],
+                    'title' => $example['title'],
+                    'category' => $example['category'],
+                    'section' => $example['section'],
+                ],
+                $database->getGuideExamples()
+            ),
         ]);
     }
 

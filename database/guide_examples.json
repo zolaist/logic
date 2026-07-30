@@ -1,65 +1,58 @@
 [
     {
-        "guide_key": "propositional-proof",
-        "title": "문장 논리",
-        "problem": "A -> ~B / B v C // A -> C",
-        "answer": "A :: AS\n~B :: 1,3,>E\nC / :: 2,4,vE\nA -> C :: 3-5,>I",
-        "logic_type": "propositional",
-        "category": "입력 가이드",
-        "section": "예제"
-    },
-    {
-        "guide_key": "predicate-proof",
-        "title": "술어 논리",
-        "problem": "~(exists x)Lxe // (forall x)~Lxe",
-        "answer": "[u] Lue :: AS\n(exists x)Lxe :: 2,EI\n_ / :: 1,3,_I\n~Lue / :: 2-4,~I\n(forall x)~Lxe :: 2-5,AI",
-        "logic_type": "predicate",
-        "category": "입력 가이드",
-        "section": "예제"
-    },
-    {
-        "guide_key": "subproof-start",
-        "title": "개시",
-        "problem": "// P -> P",
-        "answer": "P :: AS",
-        "logic_type": "propositional",
-        "category": "입력 가이드",
-        "section": "보조증명"
-    },
-    {
         "guide_key": "arbitrary-name",
         "title": "임의 이름",
+        "category": "입력 가이드",
+        "section": "보조증명",
         "problem": "(Ax)Fx / (Ax)(Fx -> Gx) // (Ax)Gx",
-        "answer": "[u] Fu :: 1, AE",
-        "logic_type": "predicate",
-        "category": "입력 가이드",
-        "section": "보조증명"
-    },
-    {
-        "guide_key": "multiple-arbitrary-names",
-        "title": "여러 임의 이름",
-        "problem": "// (∀x)(∀y)(∀z)((x=y & y=z) → x=z)",
-        "answer": "[u] [s] [t] u=s & s=t :: AS",
-        "logic_type": "predicate",
-        "category": "입력 가이드",
-        "section": "보조증명"
+        "answer": "[u] Fu :: 1, AE"
     },
     {
         "guide_key": "existential-elim-assumption",
         "title": "∃ 제거용 가정",
-        "problem": "(Ex)Fx / (Ax)(Fx -> C) // C",
-        "answer": "[d] Fd :: AS (for 1, EE)",
-        "logic_type": "predicate",
         "category": "입력 가이드",
-        "section": "보조증명"
+        "section": "보조증명",
+        "problem": "(Ex)Fx / (Ax)(Fx -> C) // C",
+        "answer": "[d] Fd :: AS (for 1, EE)"
+    },
+    {
+        "guide_key": "multiple-arbitrary-names",
+        "title": "여러 임의 이름",
+        "category": "입력 가이드",
+        "section": "보조증명",
+        "problem": "// (∀x)(∀y)(∀z)((x=y & y=z) → x=z)",
+        "answer": "[u] [s] [t] u=s & s=t :: AS"
+    },
+    {
+        "guide_key": "predicate-proof",
+        "title": "술어 논리",
+        "category": "입력 가이드",
+        "section": "예제",
+        "problem": "~(exists x)Lxe // (forall x)~Lxe",
+        "answer": "[u] Lue :: AS\n(exists x)Lxe :: 2,EI\n_ / :: 1,3,_I\n~Lue / :: 2-4,~I\n(forall x)~Lxe :: 2-5,AI"
+    },
+    {
+        "guide_key": "propositional-proof",
+        "title": "문장 논리",
+        "category": "입력 가이드",
+        "section": "예제",
+        "problem": "A -> ~B / B v C // A -> C",
+        "answer": "A :: AS\n~B :: 1,3,>E\nC / :: 2,4,vE\nA -> C :: 3-5,>I"
     },
     {
         "guide_key": "subproof-end",
         "title": "종료",
-        "problem": "// P -> P",
-        "answer": "P :: AS\nP / :: 1, R",
-        "logic_type": "propositional",
         "category": "입력 가이드",
-        "section": "보조증명"
+        "section": "보조증명",
+        "problem": "// P -> P",
+        "answer": "P :: AS\nP / :: 1, R"
+    },
+    {
+        "guide_key": "subproof-start",
+        "title": "개시",
+        "category": "입력 가이드",
+        "section": "보조증명",
+        "problem": "// P -> P",
+        "answer": "P :: AS"
     }
 ]
